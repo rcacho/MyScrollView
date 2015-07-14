@@ -28,6 +28,7 @@
     if(self) {
        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(scroll)];
         [self addGestureRecognizer:_panGestureRecognizer];
+        _contentSize = frame.size;
         
     }
     return self;
@@ -48,8 +49,15 @@
 
 - (void)adjustBounds {
     CGRect boundsRect = self.bounds;
-    boundsRect.origin.x += self.panEndLocation.x - self.panStartLocation.x;
-    boundsRect.origin.y += self.panEndLocation.y - self.panStartLocation.y;
+     double xDelta = self.panEndLocation.x - self.panStartLocation.x;
+     double yDelta = self.panEndLocation.y - self.panStartLocation.y;
+    if (xDelta + boundsRect.origin.x < self.contentSize.width) {
+        boundsRect.origin.x += xDelta;
+    }
+    if ((yDelta + boundsRect.origin.y) > 0 && (yDelta + boundsRect.origin.y) < self.contentSize.height) {
+        boundsRect.origin.y += yDelta;
+    }
+   
     [self setBounds:boundsRect];
 }
 
