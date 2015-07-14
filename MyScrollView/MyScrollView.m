@@ -51,10 +51,19 @@
     CGRect boundsRect = self.bounds;
      double xDelta = self.panEndLocation.x - self.panStartLocation.x;
      double yDelta = self.panEndLocation.y - self.panStartLocation.y;
-    if (xDelta + boundsRect.origin.x < self.contentSize.width) {
+    if ((xDelta + boundsRect.origin.x) > self.contentSize.width) {
+        boundsRect.origin.x = self.contentSize.width;
+    } else if ((xDelta + boundsRect.origin.x) < 0) {
+        boundsRect.origin.x = 0;
+    } else {
         boundsRect.origin.x += xDelta;
     }
-    if ((yDelta + boundsRect.origin.y) > 0 && (yDelta + boundsRect.origin.y) < self.contentSize.height) {
+    
+    if ((yDelta + boundsRect.origin.y) < 0) {
+        boundsRect.origin.y = 0;
+    } else if ((yDelta + boundsRect.origin.y) > self.contentSize.height) {
+        boundsRect.origin.y = self.contentSize.height;
+    } else{
         boundsRect.origin.y += yDelta;
     }
    
